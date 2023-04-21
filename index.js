@@ -22,7 +22,7 @@ class Book {
 
 // class for establishing methods to be used and call for api database
 class GenreAdd {
-    static url= 'http://localhost:3000/Library'; // local api
+    static url= 'https://64412ead792fe886a8a09b3d.mockapi.io/wk12API/Genre'; // local api
 
     //method for returning url
     static getAllGenres (){
@@ -31,12 +31,12 @@ class GenreAdd {
 
     //method to return url & genre id using jquery selector
     static getGenre(id) {
-        return $.get(this.url, genre);
+        return $.get(this.url + `/${id}`);
     }
 
     //method for creating new genre and returning the new genre value concatenated w/ id
     static createGenre(genre) {
-        return $.get(this.url + `/${id}`);
+        return $.get(this.url, genre);
     } 
 
     //method for 
@@ -46,7 +46,8 @@ class GenreAdd {
             dataType: 'json', 
             data: JSON.stringify(genre), 
             contentType: 'application/json',
-            type: 'PUT'
+            type: 'POST',
+            crossDomain: true,
         });
     }
     
@@ -157,7 +158,10 @@ class DOMManager {
     }
 }
 
-console.log(genre);
-
+// console.log(genre);
+$('#create-new-genre').click(() => {
+    DOMManager.createGenre($('#new-genre-name').val());
+    $('#new-genre-name').val('');
+})
 
 DOMManager.getAllGenres();
