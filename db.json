@@ -1,21 +1,33 @@
 {
     "Library": [
         {
-            "title": "The Hobbit",
-            "Author": "J.R.R Tolkien",
-            "id": "1"
+           "Genre": {
+                "Fantasy": {
+                    "title": "The Hobbit",
+                    "Author": "J.R.R Tolkien",
+                    "id": "1"
+                }
+           }
         },
 
         {
-            "title": "The Chronicles of Narnia",
-            "Author": "C.S Lewis",
-            "id": "2"
+            "Genre": {
+                "Mystery": {
+                    "title": "Sherlock Holmes Adventures",
+                    "Author": "Sir Conan Author Doyle",
+                    "id": "2"
+                }
+           }
         },
 
         {
-            "title": "A Song of Ice & Fire",
-            "Author": "George R. Martin",
-            "id": "3"
+            "Genre": {
+                "Western": {
+                    "title": "The Sacketts",
+                    "Author": "Louis L'amour",
+                    "id": "3"
+                }
+           }
         }
 
     ]

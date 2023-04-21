@@ -157,4 +157,7 @@ class DOMManager {
     }
 }
 
+console.log(genre);
+
+
 DOMManager.getAllGenres();
