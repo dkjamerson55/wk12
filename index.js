@@ -22,7 +22,7 @@ class Book {
 
 // class for establishing methods to be used and call for api database
 class GenreAdd {
-    static url= 'https://64412ead792fe886a8a09b3d.mockapi.io/wk12API/Genre'; // local api
+    static url= 'https://64412ead792fe886a8a09b3d.mockapi.io/wk12API/Genres'; // local api
 
     //method for returning url
     static getAllGenres (){
