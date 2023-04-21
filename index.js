@@ -1,3 +1,4 @@
+
 // class for holding array of books
 class Genre {
     constructor (name){
@@ -21,7 +22,7 @@ class Book {
 
 // class for establishing methods to be used and call for api database
 class GenreAdd {
-    static url= 'https://64412ead792fe886a8a09b3d.mockapi.io/:endpoint'; // needs api added
+    static url= 'http://localhost:3000/Library'; // local api
 
     //method for returning url
     static getAllGenres (){
@@ -41,7 +42,7 @@ class GenreAdd {
     //method for 
     static updateGenre(genre) {
         return $.ajax({
-            url: this.url + `${genre._id}`,
+            url: this.url + `${genre.id}`,
             dataType: 'json', 
             data: JSON.stringify(genre), 
             contentType: 'application/json',
@@ -99,8 +100,61 @@ class DOMManager {
         }
     }
 
-    //method for rendering genres
+    static deleteBook (genreId, bookId) {
+        for (let genre of this.genre) {
+            if (genre._id == genreId) {
+                for (let book of genre.books) {
+                    if (book._id == bookId) {
+                        genre.books.splice(genre.books.indexOf(book), 1);
+                        GenreAdd.updateGenre(genre)
+                        .then(() => {
+                            return GenreAdd.getAllGenres();
+                        })
+                        .then((genres) => this.render(genres));
+                    }
+                }
+            }
+        }
+    }
 
+    //method for rendering genres
+    static render(genres) {
+        this.genre = genres;
+        $('#app').empty();
+        for(let genre of genres) {
+            $('#app').prepend(
+                `<div id="$(genre._id)" class="card m-4">
+                    <div class= "card-header">
+                        <h2>${genre.name}</h2>
+                        <button class= "btn btn-danger mb-5" onclick= "DOMManager.deleteGenre('${genre._id}')">Delete Genre</button>
+                    </div>
+                    
+                    <div class= "card-body">
+                        <div class= "card">
+                            <div class= "row m-3">
+                                <div class= "col-sm">
+                                    <input type= "text" id= "${genre._id}-book-title" class= "form-control" placeholder= "Book Title">
+                                </div>
+
+                                <div class= "col-sm">
+                                    <input type= "text" id= "${genre._id}-book-author" class= "form-control" placeholder= "Book Author">
+                                </div>
+                            </div>
+                            <button id="${genre._id}-new-book" onclick= "DOMManager.addBook('${genre._id}'): class="btn btn-warning form-control">Add Book</button>
+                        </div>
+                    </div>
+                </div><br>`
+            );
+            for(let book of genre.books) {
+                $(`${genre._id}`).find('.card-body').append(
+                    `<p>
+                        <span id="title-${book._id}"><strong>Title: </strong> ${book.title}</span>
+                        <span id= "author-${book._id}"><strong>Author: </strong> ${book.author}</span>
+                        <button class= "btn btn-danger" onclick= "DOMManager.deleteBook('${genre._id})', '${book._id}')">Delete Book</button>`
+                )
+            }
+        }
+    }
 }
 
 DOMManager.getAllGenres();
