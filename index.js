@@ -36,7 +36,15 @@ class GenreAdd {
 
     //method for creating new genre and returning the new genre value concatenated w/ id
     static createGenre(genre) {
-        return $.get(this.url, genre);
+        // return $.get(this.url, genre);
+        return $.ajax({
+            url: this.url + `${genre.id}`,
+            dataType: 'json', 
+            data: JSON.stringify(genre), 
+            contentType: 'application/json',
+            type: 'POST',
+            crossDomain: true,
+        });
     } 
 
     //method for 
@@ -46,7 +54,7 @@ class GenreAdd {
             dataType: 'json', 
             data: JSON.stringify(genre), 
             contentType: 'application/json',
-            type: 'POST',
+            type: 'PUT',
             crossDomain: true,
         });
     }
@@ -54,7 +62,7 @@ class GenreAdd {
     //method that will target a specific genre id to delete from api
     static deleteGenre(id) {
         return $.ajax({
-            url: this.url + `/${id}`,
+            url: `${this.url}/${id}`,
             type: 'DELETE'
         });
     }
