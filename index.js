@@ -44,6 +44,7 @@ class GenreAdd {
         //     type: 'POST', //create
         //     crossDomain: true,
         // });
+        //this returns an error code when ran with program
 
         return $.get(this.url, genre);
     } 
