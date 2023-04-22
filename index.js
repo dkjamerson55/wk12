@@ -24,7 +24,7 @@ class Book {
 class GenreAdd {
     static url= 'https://64412ead792fe886a8a09b3d.mockapi.io/wk12API/Genre'; // local api
 
-    //method for returning url
+    //method for reading all genre entries & returning url
     static getAllGenres (){
         return $.get(this.url);
     }
@@ -36,14 +36,14 @@ class GenreAdd {
 
     //method for creating new genre and returning the new genre value concatenated w/ id
     static createGenre(genre) {
-        return $.ajax({
-            url: this.url + `${genre.id}`,
-            dataType: 'json', 
-            data: JSON.stringify(genre), 
-            contentType: 'application/json',
-            type: 'POST',
-            crossDomain: true,
-        });
+        // return $.ajax({
+        //     url: this.url + `/${genre.id}`,
+        //     dataType: 'json', 
+        //     data: JSON.stringify(genre), 
+        //     contentType: 'application/json',
+        //     type: 'POST', //create
+        //     crossDomain: true,
+        // });
 
         return $.get(this.url, genre);
     } 
@@ -51,19 +51,19 @@ class GenreAdd {
     //method for 
     static updateGenre(genre) {
         return $.ajax({
-            url: this.url + `${genre.id}`,
+            url: this.url + `/${genre.id}`,
             dataType: 'json', 
             data: JSON.stringify(genre), 
             contentType: 'application/json',
-            type: 'PUT',
-            crossDomain: true,
+            type: 'PUT', //update
+            // crossDomain: true,
         });
     }
     
     //method that will target a specific genre id to delete from api
     static deleteGenre(id) {
         return $.ajax({
-            url: `${this.url}/${id}`,
+            url: this.url + `${id}`,
             type: 'DELETE'
         });
     }
@@ -99,8 +99,8 @@ class DOMManager {
     //method for adding new book to array
     static addBook(id) {
         for(let genre of this.genres) {
-            if (genre._id == id) {
-                genre.books.push(new Book($(`#${genre._id}-book-title`).val(), $(`#${genre._id}-book-author`).val()));
+            if (genre.id == id) {
+                genre.books.push(new Book($(`#${genre.id}-book-title`).val(), $(`#${genre.id}-book-author`).val()));
                 GenreAdd.updateGenre(genre)
                     .then(() => {
                         return GenreAdd.getAllGenres();
@@ -112,10 +112,10 @@ class DOMManager {
 
     // method for deleting Book based off of genre ID, book ID & its index in the array, then updating & rendering the data
     static deleteBook (genreId, bookId) {
-        for (let genre of this.genre) {
-            if (genre._id == genreId) {
+        for (let genre of this.genres) {
+            if (genre.id == genreId) {
                 for (let book of genre.books) {
-                    if (book._id == bookId) {
+                    if (book.id == bookId) {
                         genre.books.splice(genre.books.indexOf(book), 1);
                         GenreAdd.updateGenre(genre)
                         .then(() => {
@@ -134,24 +134,24 @@ class DOMManager {
         $('#app').empty();
         for(let genre of genres) {
             $('#app').prepend(
-                `<div id="${genre._id}" class="card m-4">
+                `<div id="${genre.id}" class="card m-4">
                     <div class= "card-header">
                         <h2>${genre.name}</h2>
-                        <button class= "btn btn-danger mb-5" onclick= "DOMManager.deleteGenre('${genre._id}')">Delete Genre</button>
+                        <button class= "btn btn-danger mb-5" onclick= "DOMManager.deleteGenre('${genre.id}')">Delete Genre</button>
                     </div>
                     
                     <div class= "card-body">
                         <div class= "card">
                             <div class= "row m-3">
                                 <div class= "col-sm">
-                                    <input type= "text" id="${genre._id}-book-title" class= "form-control" placeholder= "Book Title"> 
+                                    <input type= "text" id="${genre.id}-book-title" class= "form-control" placeholder= "Book Title"> 
                                 </div>
 
                                 <div class= "col-sm">
-                                    <input type= "text" id= "${genre._id}-book-author" class= "form-control" placeholder= "Book Author">
+                                    <input type= "text" id= "${genre.id}-book-author" class= "form-control" placeholder= "Book Author">
                                 </div>
                             </div>
-                            <button id="${genre._id}-new-book" onclick= "DOMManager.addBook('${genre._id}'): class="btn btn-warning form-control">Add Book</button>
+                            <button id="${genre.id}-new-book" onclick= "DOMManager.addBook('${genre.id}')": class="btn btn-warning form-control">Add Book</button>
                         </div>
                     </div>
                 </div><br>`
@@ -159,11 +159,11 @@ class DOMManager {
 
             //loop for appending each book to the id of current genre
             for(let book of genre.books) {
-                $(`#${genre._id}`).find('.card-body').append(
+                $(`#${genre.id}`).find('.card-body').append(
                     `<p>
-                        <span id="title-${book._id}"><strong>Title: </strong> ${book.title}</span>
-                        <span id= "author-${book._id}"><strong>Author: </strong> ${book.author}</span>
-                        <button class= "btn btn-danger" onclick= "DOMManager.deleteBook('${genre._id})', '${book._id}')">Delete Book</button>
+                        <span id="title-${book.id}"><strong>Title: </strong> ${book.title}</span>
+                        <span id= "author-${book.id}"><strong>Author: </strong> ${book.author}</span>
+                        <button class= "btn btn-danger" onclick= "DOMManager.deleteBook('${genre.id})', '${book.id}')">Delete Book</button>
                     </p>`
                 )
             }
