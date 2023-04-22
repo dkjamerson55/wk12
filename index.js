@@ -56,14 +56,14 @@ class GenreAdd {
             data: JSON.stringify(genre), 
             contentType: 'application/json',
             type: 'PUT', //update
-            // crossDomain: true,
+            crossDomain: true,
         });
     }
     
     //method that will target a specific genre id to delete from api
     static deleteGenre(id) {
         return $.ajax({
-            url: this.url + `${id}`,
+            url: this.url + `/${id}`,
             type: 'DELETE'
         });
     }
