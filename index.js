@@ -46,7 +46,7 @@ class GenreAdd {
         // });
         //this returns an error code when ran with program
 
-        return $.get(this.url, genre);
+        return $.post(this.url, genre);
     } 
 
     //method for 
@@ -57,7 +57,7 @@ class GenreAdd {
             data: JSON.stringify(genre), 
             contentType: 'application/json',
             type: 'PUT', //update
-            crossDomain: true,
+            // crossDomain: true,
         });
     }
     
@@ -136,12 +136,12 @@ class DOMManager {
         for(let genre of genres) {
             $('#app').prepend(
                 `<div id="${genre.id}" class="card m-4">
-                    <div class= "card-header">
+                    <div class= "card-header text-dark">
                         <h2>${genre.name}</h2>
                         <button class= "btn btn-danger mb-5" onclick= "DOMManager.deleteGenre('${genre.id}')">Delete Genre</button>
                     </div>
                     
-                    <div class= "card-body">
+                    <div class= "card-body text-dark">
                         <div class= "card">
                             <div class= "row m-3">
                                 <div class= "col-sm">
